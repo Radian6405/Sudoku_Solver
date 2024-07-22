@@ -5,22 +5,15 @@ import config
 
 N = config.N 
 
-temp_Grid = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
+temp_Grid = [[0,0,0,0,0,0,0,0,0],
+             [0,0,0,0,0,0,0,0,0],
+             [0,0,0,0,0,0,0,0,0],
+             [0,0,0,0,0,0,0,0,0],
+             [0,0,0,0,0,0,0,0,0],
+             [0,0,0,0,0,0,0,0,0],
+             [0,0,0,0,0,0,0,0,0],
+             [0,0,0,0,0,0,0,0,0],
+             [0,0,0,0,0,0,0,0,0]]
 
 #main solve fucntion
 def sudokuSolve():
@@ -120,11 +113,7 @@ def modify_cell_options(row,clm):
             ismodified = True
 
     #3x3 zone
-    if N == 16:
-        div  = 4
-    else:
-        div = 3
-    rnew, cnew = row - row % div, clm - clm % div;
+    rnew, cnew = row - row % 3, clm - clm % 3;
     for i in range(rnew,rnew + 3):
         for j in range(cnew, cnew + 3):
             if (config.grid[i][j] in config.options[row][clm]):
@@ -139,7 +128,7 @@ def row_solve():
     i = 0
     while (i < N):
         #for every row
-        poss = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        poss = [0,0,0,0,0,0,0,0,0]
         for j in range(N):
             if config.grid[i][j] != 0:
                 continue
@@ -167,7 +156,7 @@ def clm_solve():
     i = 0
     while (i < N):
         #for every colum
-        poss = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        poss = [0,0,0,0,0,0,0,0,0]
         for j in range(N):
             if config.grid[j][i] != 0:
                 continue
@@ -194,15 +183,11 @@ def clm_solve():
 def zone_solve():
     i = 0
     j = 0
-    if N == 16:
-        div = 4
-    else:
-        div = 3
     while (i < N):
         #for each zone
-        poss = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-        for k in range(i,i+div):
-            for l in range(j, j+div):
+        poss = [0,0,0,0,0,0,0,0,0]
+        for k in range(i,i+3):
+            for l in range(j, j+3):
                 #for each cell
                 if config.grid[k][l] != 0:
                     continue
@@ -223,11 +208,11 @@ def zone_solve():
 
                         return True
 
-        if(j >= N - div):
+        if(j >= 6):
             j = 0
-            i += div
+            i += 3
         else:
-            j += div
+            j += 3
 
     return False
 
@@ -253,8 +238,8 @@ def backtrack_init():
 
 def backtrack_solve(row, clm):
     #next step
-    if clm == N:
-        if row == N - 1:
+    if clm == 9:
+        if row == 8:
             return True
         row += 1
         clm = 0
@@ -263,7 +248,7 @@ def backtrack_solve(row, clm):
         return backtrack_solve(row, clm + 1)
     
     #main recursion
-    for num in config.options[row][clm]:
+    for num in range(1,10):
 
         if isValid(row, clm, num):
 
@@ -280,10 +265,6 @@ def backtrack_solve(row, clm):
 def isValid(row, clm, number):
 
     #checking if a number is valid in cell
-    if N == 16:
-        div = 4
-    else:
-        div = 3
     for i in range(N):
         if temp_Grid[row][i] == number:
             return False
@@ -292,9 +273,9 @@ def isValid(row, clm, number):
         if temp_Grid[i][clm] == number:
             return False
 
-    rnew, cnew = row - row %div, clm - clm % div
-    for i in range(rnew, rnew + div):
-        for j in range(cnew, cnew + div):
+    rnew, cnew = row - row %3, clm - clm % 3
+    for i in range(rnew, rnew + 3):
+        for j in range(cnew, cnew + 3):
             if temp_Grid[i][j] == number:
                 return False
 
@@ -315,7 +296,7 @@ def grid_verify():
         for j in range(N):
             sum += config.grid[i][j]
         
-        if (sum != 136):
+        if (sum != 45):
             return False
     
     #clm verify
@@ -324,7 +305,7 @@ def grid_verify():
         for j in range(N):
             sum += config.grid[j][i]
         
-        if (sum != 136):
+        if (sum != 45):
             return False
     
     #3x3 zone verify
@@ -336,7 +317,7 @@ def grid_verify():
                 for l in range(j, j+3):
                     sum += config.grid[k][l]
             
-            if (sum != 136):
+            if (sum != 45):
                 return False
 
     return True
@@ -356,18 +337,9 @@ def setup_grid(difficulty):
     for i in range(N):
         config.grid[i] = tempGrid[i]
 
-#difficulty
-def findDiff():
-    for i in range(N):
-        options = 0
-        for j in range(N):
-            config.grid[i][j]
-
-
 if (__name__ == '__main__'):
     #setup_grid(0) 
     UI_main.SetupUI()
     sudokuSolve()
-    
 
 

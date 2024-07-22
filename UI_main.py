@@ -63,13 +63,13 @@ def SetupUI():
     root.title(Name)
     root.configure(background=config.light_gray)
     root.iconbitmap("UI_Elements\icon.ico")
-    root.geometry("700x800+800+0")
+    root.geometry("610x800+800+0")
 
     Main_frame = Frame(root,bg = config.dark_gray)
 
-    '''#frame1
+    #frame1
     image = PhotoImage(file= "UI_Elements\logo.gif")
-    Title = Label(Main_frame, image=image,bg = config.dark_gray)'''
+    Title = Label(Main_frame, image=image,bg = config.dark_gray)
 
     #frame2
     Frame2 = Frame(Main_frame,bg = config.dark_gray)
@@ -117,8 +117,8 @@ def SetupUI():
 
     #---placing in grids---
     Main_frame.grid(row= 0, column= 0,padx= 50, pady= 20, sticky="N")
-    '''#frame1
-    Title.grid(row=0, column= 0, sticky="N",pady= 20)'''
+    #frame1
+    Title.grid(row=0, column= 0, sticky="N",pady= 20)
 
     #frame2
     Frame2.grid(row= 1, column=0, pady= 10, sticky="N")
